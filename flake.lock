@@ -36,6 +36,25 @@
         "type": "github"
       }
     },
+    "nix-eda_2": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1750505071,
+        "narHash": "sha256-+6V4BZu5ydULvzg+seKH1Nv9m7YOtydg70ZSqCZ+9Fw=",
+        "owner": "fossi-foundation",
+        "repo": "nix-eda",
+        "rev": "0572ad4c916c9609d3fcde416a8792462ca204a1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "fossi-foundation",
+        "ref": "4.3.1",
+        "repo": "nix-eda",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1733120037,
@@ -54,6 +73,22 @@
     },
     "nixpkgs_2": {
       "locked": {
+        "lastModified": 1733120037,
+        "narHash": "sha256-En+gSoVJ3iQKPDU1FHrR6zIxSLXKjzKY+pnh9tt+Yts=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "f9f0d5c5380be0a599b1fb54641fa99af8281539",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-24.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
         "lastModified": 1735563628,
         "narHash": "sha256-OnSAY7XDSx7CtDoqNh8jwVwh4xNL/2HaJxGjryLWzX8=",
         "owner": "nixos",
@@ -71,7 +106,8 @@
     "root": {
       "inputs": {
         "ciel": "ciel",
-        "nixpkgs": "nixpkgs_2"
+        "nix-eda": "nix-eda_2",
+        "nixpkgs": "nixpkgs_3"
       }
     }
   },
