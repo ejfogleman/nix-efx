@@ -1,7 +1,7 @@
 {
   description = "nix-efx: Open-source ASIC tool environment";
+
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     ciel.url = "github:fossi-foundation/ciel";
     nix-eda.url = "github:fossi-foundation/nix-eda/4.3.1";
   };
@@ -11,39 +11,60 @@
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       edaPkgs = nix-eda.packages.x86_64-linux;
     in {
+
+      # ---------------------------
+      # Meta-package for `nix shell .`
+      # ---------------------------
       packages.x86_64-linux = {
-        ciel = ciel.packages.x86_64-linux.ciel;
-        # Inherit all available tools from nix-eda 4.3.1
-        inherit (edaPkgs) magic klayout klayout-gdsfactory netgen tclFull tk-x11 iverilog verilator xschem ngspice bitwuzla yosys yosys-sby yosys-eqy yosys-lighter yosys-slang yosys-ghdl gdsfactory gdstk tclint;
-        default = self.packages.x86_64-linux.ciel;
+        allTools = pkgs.buildEnv {
+          name = "efx_all_tools";
+          paths = [
+            # nix-eda packages
+            edaPkgs.magic
+            edaPkgs.klayout-gdsfactory
+            edaPkgs.netgen
+            edaPkgs.tclFull
+            edaPkgs.tk-x11
+            edaPkgs.verilator
+            edaPkgs.xschem
+            edaPkgs.ngspice
+            edaPkgs.bitwuzla
+            edaPkgs.yosys
+            edaPkgs.yosys-sby
+            edaPkgs.yosys-eqy
+            edaPkgs.yosys-lighter
+            edaPkgs.yosys-ghdl
+            edaPkgs.gdsfactory
+            edaPkgs.gdstk
+            edaPkgs.tclint
+
+            # Packages from nixpkgs
+            pkgs.iverilog
+            pkgs.gtkwave
+            pkgs.gtk3
+            pkgs.libcanberra
+          ];
+        };
+
+        default = self.packages.x86_64-linux.allTools;
       };
 
+      # ---------------------------
+      # Dev shell for `nix develop`
+      # ---------------------------
       devShells.x86_64-linux.default = pkgs.mkShell {
         name = "efx_tools_dev_shell";
+
         buildInputs = [
-          self.packages.x86_64-linux.ciel
-          edaPkgs.magic
-          edaPkgs.klayout
-          edaPkgs.klayout-gdsfactory
-          edaPkgs.netgen
-          edaPkgs.tclFull
-          edaPkgs.tk-x11
-          edaPkgs.iverilog
-          edaPkgs.verilator
-          edaPkgs.xschem
-          edaPkgs.ngspice
-          edaPkgs.bitwuzla
-          edaPkgs.yosys
-          edaPkgs.yosys-sby
-          edaPkgs.yosys-eqy
-          edaPkgs.yosys-lighter
-          edaPkgs.yosys-slang
-          edaPkgs.yosys-ghdl
-          edaPkgs.gdsfactory
-          edaPkgs.gdstk
-          edaPkgs.tclint
+          self.packages.x86_64-linux.allTools
         ];
+
+        # Set proper locales for GTK
+        shellHook = ''
+          export LANG=en_US.UTF-8
+          export LANGUAGE=en_US:en
+          export LC_ALL=en_US.UTF-8
+        '';
       };
     };
 }
-
