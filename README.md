@@ -9,10 +9,7 @@ Utilizes [fossi-foundation/nix-eda](https://github.com/fossi-foundation/nix-eda)
 
 1. Install nix in single-user mode
 
-    `sh <(curl -L https://nixos.org/nix/install) --no-daemon`
-    
-        - `--no-daemon` = single-user mode
-        - Does not require root after installation
+    `sh <(curl -L https://nixos.org/nix/install) --no-daemon`, single-user mode; does not require root after installation
 
 2. Update your shell environment
 
