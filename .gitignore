@@ -1,0 +1,34 @@
+# Nix
+/result/
+/result
+/.direnv/
+/.envrc
+
+# Python (Common for EDA and scripts)
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# VSCode
+.vscode/
+.code-workspace
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Backup files
+*~
+*#
+
+# User-specific
+*.swp
+*.swo
+.idea/
