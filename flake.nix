@@ -1,11 +1,13 @@
 {
   description = "nix-efx: Open-source ASIC tool environment";
 
+  # Define inputs with URLs
   inputs = {
     ciel.url = "github:fossi-foundation/ciel";
     nix-eda.url = "github:fossi-foundation/nix-eda/4.3.1";
   };
 
+  # Define outputs using the inputs
   outputs = { self, nixpkgs, ciel, nix-eda, ... }:
     let
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
@@ -43,6 +45,9 @@
             pkgs.gtkwave
             pkgs.gtk3
             pkgs.libcanberra
+
+            # Ciel tool
+            ciel.packages.x86_64-linux.default
           ];
         };
 
@@ -68,3 +73,4 @@
       };
     };
 }
+
