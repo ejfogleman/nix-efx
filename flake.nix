@@ -31,7 +31,6 @@
             edaPkgs.tk-x11
             edaPkgs.verilator
             edaPkgs.xschem
-            edaPkgs.ngspice
             edaPkgs.bitwuzla
             edaPkgs.yosys
             edaPkgs.yosys-sby
@@ -47,6 +46,7 @@
             pkgs.gtkwave
             pkgs.gtk3
             pkgs.libcanberra
+            pkgs.ngspice
 
             # Ciel tool
             ciel.packages.x86_64-linux.default
