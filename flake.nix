@@ -1,10 +1,13 @@
+# changes 1/12/25 ejf
+# removed /4.3.1 from nix-eda (don't worry about gdsfactory sky130)
+# removed 'edaPkgs.tclFull' from nix-eda packages
 {
   description = "nix-efx: Open-source ASIC tool environment";
 
   # Define inputs with URLs
   inputs = {
     ciel.url = "github:fossi-foundation/ciel";
-    nix-eda.url = "github:fossi-foundation/nix-eda/4.3.1";
+    nix-eda.url = "github:fossi-foundation/nix-eda";
   };
 
   # Define outputs using the inputs
@@ -25,7 +28,6 @@
             edaPkgs.magic
             edaPkgs.klayout-gdsfactory
             edaPkgs.netgen
-            edaPkgs.tclFull
             edaPkgs.tk-x11
             edaPkgs.verilator
             edaPkgs.xschem
