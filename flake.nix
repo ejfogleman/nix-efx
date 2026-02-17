@@ -76,10 +76,14 @@
         ];
 
         # Set proper locales for GTK
+          # Use the installed locale
         shellHook = ''
-          export LANG=en_US.UTF-8
-          export LANGUAGE=en_US:en
-          export LC_ALL=en_US.UTF-8
+            unset LC_ALL
+            export LANG=en_US.utf8
+            export LANGUAGE=en_US:en
+
+        # Set prompt manually
+        export PS1="[nix-efx] \u@\h:\w\$ "
         '';
       };
     };

@@ -7,23 +7,34 @@ Utilizes [fossi-foundation/nix-eda](https://github.com/fossi-foundation/nix-eda)
 # Initial setup (assuming nix is not installed)
 
 1. Install nix in single-user mode:
-    ```
+    ```bash
     sh <(curl -L https://nixos.org/nix/install) --no-daemon
     ```
     single-user mode; does not require root after installation
 
 2. Update your shell environment
 
-    After installation, either log out and log back in, or source the profile manually:
+    Add Nix to your shell automatically by editing ~/.bashrc:
+    ```bash
+    # Load Nix profile for single-user installation
+    if [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
+        . "$HOME/.nix-profile/etc/profile.d/nix.sh"
+    fi
     ```
-    . ~/.nix-profile/etc/profile.d/nix.sh
+
+    This ensures `$PATH` and other environment variables are set for all new Bash sessions.
+
+    After adding this, either start a new terminal or run:
+    ```bash
+    source ~/.bashrc
     ```
-    This sets $PATH and other environment variables so Nix commands are available.
+
+to activate Nix in your current session.
 
 3. Enable "experimental features" so nix will recognize flakes.
 
     Edit or create the config:
-    ```
+    ```bash
     mkdir -p ~/.config/nix
     echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
     ```
@@ -31,7 +42,7 @@ Utilizes [fossi-foundation/nix-eda](https://github.com/fossi-foundation/nix-eda)
 # Installation of nix-efx
 
 1. Clone `nix-efx` to home directory:
-    ```
+    ```bash
     cd ~
     git clone https://github.com/ejfogleman/nix-efx.git
     ```
