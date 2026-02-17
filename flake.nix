@@ -6,8 +6,14 @@
 
   # Define inputs with URLs
   inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";  # was 24.05
+
     ciel.url = "github:fossi-foundation/ciel";
-    nix-eda.url = "github:fossi-foundation/nix-eda";
+
+    nix-eda = {
+      url = "github:fossi-foundation/nix-eda";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   # Define outputs using the inputs
