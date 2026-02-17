@@ -6,7 +6,7 @@
 
   # Define inputs with URLs
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";  # was 24.05
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";  # or 'unstable'
 
     ciel.url = "github:fossi-foundation/ciel";
 
@@ -32,10 +32,13 @@
           paths = [
             # nix-eda packages
             edaPkgs.magic
-            edaPkgs.klayout-gdsfactory
+            # edaPkgs.klayout-gdsfactory  # broken!
+            edaPkgs.klayout
             edaPkgs.netgen
             edaPkgs.tk-x11
-            edaPkgs.verilator
+            (edaPkgs.verilator.overrideAttrs (_: {
+              doCheck = false;
+            }))
             edaPkgs.xschem
             edaPkgs.bitwuzla
             edaPkgs.yosys
@@ -43,7 +46,7 @@
             edaPkgs.yosys-eqy
             edaPkgs.yosys-lighter
             edaPkgs.yosys-ghdl
-            edaPkgs.gdsfactory
+            # edaPkgs.gdsfactory  # broken!
             edaPkgs.gdstk
             edaPkgs.tclint
 
