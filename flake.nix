@@ -1,6 +1,7 @@
 # changes 1/12/25 ejf
 # removed /4.3.1 from nix-eda (don't worry about gdsfactory sky130)
 # removed 'edaPkgs.tclFull' from nix-eda packages
+# added xschem-gaw for analog waveform viewing with xschem
 {
   description = "nix-efx: Open-source ASIC tool environment";
 
@@ -21,6 +22,42 @@
     let
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       edaPkgs = nix-eda.packages.x86_64-linux;
+
+      # Custom package: xschem-gaw (GTK Analog Wave viewer)
+      xschem-gaw = pkgs.stdenv.mkDerivation rec {
+        pname = "xschem-gaw";
+        version = "20200922";
+
+        src = pkgs.fetchFromGitHub {
+          owner = "StefanSchippers";
+          repo = "xschem-gaw";
+          rev = "6b8fa4ab007e88b3129381e0479737ae014a8b51";  # latest commit (Mar 28, 2025)
+          sha256 = "sha256-rZ0XsMfctZAbfLswVMzcginR6bHG5lY9qG/xyfF/ooM=";  # updated after first build
+        };
+
+        nativeBuildInputs = with pkgs; [
+          autoreconfHook
+          pkg-config
+        ];
+
+        buildInputs = with pkgs; [
+          gtk3
+          alsa-lib
+          gettext
+        ];
+
+        configureFlags = [
+          "--enable-gawsound=yes"
+        ];
+
+        meta = with pkgs.lib; {
+          description = "GTK Analog Wave viewer - fork with xschem integration patches";
+          homepage = "https://github.com/StefanSchippers/xschem-gaw";
+          license = licenses.gpl2Plus;
+          platforms = platforms.linux;
+        };
+      };
+
     in {
 
       # ---------------------------
@@ -59,6 +96,9 @@
 
             # Ciel tool
             ciel.packages.x86_64-linux.default
+
+            # Custom packages
+            xschem-gaw
           ];
         };
 

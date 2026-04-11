@@ -1,7 +1,7 @@
 # nix-efx: Open-source IC design tools
 
 Utilizes [fossi-foundation/nix-eda](https://github.com/fossi-foundation/nix-eda) with some modifications
-* Adds 'ciel', 'iverilog', 'gtkwave'
+* Adds 'ciel', 'iverilog', 'gtkwave', 'xschem-gaw'
 * Uses `github:fossi-foundation/nix-eda/4.3.1` for sky130-compatible klayout 
 
 # Initial setup (assuming nix is not installed)
