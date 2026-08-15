@@ -194,7 +194,43 @@
 
         default = self.packages.x86_64-linux.allTools;
 
-        inherit ciccreator cicpy;
+        inherit xschem-gaw ciccreator cicpy;
+      };
+
+      # ---------------------------
+      # Smoke tests for locally-built custom packages
+      # (upstream nix-eda/nixpkgs/ciel packages are already built and
+      # tested by their own flakes, so they're not re-tested here)
+      # Run with `nix flake check`.
+      # ---------------------------
+      checks.x86_64-linux = {
+        # gaw is a pure GTK app with no non-interactive --help/--version
+        # mode, so the meaningful check is "does it link cleanly" rather
+        # than "does it run" (no display is available in the sandbox).
+        xschem-gaw-smoke = pkgs.runCommand "xschem-gaw-smoke-test" { } ''
+          set -euo pipefail
+          test -x ${xschem-gaw}/bin/gaw
+          missing=$(${pkgs.glibc.bin}/bin/ldd ${xschem-gaw}/bin/gaw | grep "not found" || true)
+          if [ -n "$missing" ]; then
+            echo "Unresolved shared libraries for gaw:" >&2
+            echo "$missing" >&2
+            exit 1
+          fi
+          touch $out
+        '';
+
+        ciccreator-smoke = pkgs.runCommand "ciccreator-smoke-test" { } ''
+          set -euo pipefail
+          ${ciccreator}/bin/cic ${ciccreator.src}/examples/routes.json ${ciccreator.src}/examples/tech.json routes
+          test -s routes.cic
+          touch $out
+        '';
+
+        cicpy-smoke = pkgs.runCommand "cicpy-smoke-test" { } ''
+          set -euo pipefail
+          ${cicpy}/bin/cicpy --help
+          touch $out
+        '';
       };
 
       # ---------------------------
