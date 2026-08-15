@@ -58,6 +58,94 @@
         };
       };
 
+      # Custom package: ciccreator (Custom IC Creator - cic/cic-gui)
+      ciccreator = pkgs.stdenv.mkDerivation {
+        pname = "ciccreator";
+        version = "0.1.5";
+
+        src = pkgs.fetchFromGitHub {
+          owner = "wulffern";
+          repo = "ciccreator";
+          rev = "85f470946531f1e794cc431a7cfaf09e528b3485";  # latest master (Aug 2026)
+          hash = "sha256-1ZuTjNKPFf52nakKfHhqq05XWUfvmYDeI3E5yE89oZ0=";
+        };
+
+        nativeBuildInputs = [ pkgs.qt6.qmake pkgs.qt6.wrapQtAppsHook ];
+        buildInputs = [ pkgs.qt6.qtbase ];
+
+        # Upstream's Makefile stamps this via `git describe`, which isn't
+        # available from a fetchFromGitHub source tree (no .git dir).
+        postPatch = ''
+          printf '#define CICVERSION "0.1.5+ nix"\n#define CICHASH ""\n' > cic/src/version.h
+          printf '#define CICVERSION "0.1.5+ nix"\n#define CICHASH ""\n' > cic-gui/src/version.h
+        '';
+
+        qmakeFlags = [ "ciccreator.pro" ];
+
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out/bin
+          install -Dm755 bin/linux/cic $out/bin/cic
+          install -Dm755 bin/linux/cic-gui $out/bin/cic-gui
+          runHook postInstall
+        '';
+
+        meta = with pkgs.lib; {
+          description = "Custom IC Creator: compiles a JSON object definition + SPICE + design rules into layout (JSON or GDS)";
+          homepage = "https://github.com/wulffern/ciccreator";
+          license = licenses.gpl3Plus;
+          platforms = platforms.linux;
+          mainProgram = "cic";
+        };
+      };
+
+      # Custom package: cicspi (dependency of cicpy, PyPI-only, no nixpkgs entry)
+      cicspi = pkgs.python3.pkgs.buildPythonPackage rec {
+        pname = "cicspi";
+        version = "0.1.4";
+        format = "wheel";
+
+        src = pkgs.fetchurl {
+          url = "https://files.pythonhosted.org/packages/a4/b3/6d33e3e78d52b8ba7e580c96946a0bfda029897846adf5e56c12b6d7288d/${pname}-${version}-py3-none-any.whl";
+          sha256 = "405e81285eea5f14df469fa6448199467b0f725c94be90ddbdb98ae70643a073";
+        };
+
+        propagatedBuildInputs = [ pkgs.python3.pkgs.click ];
+        doCheck = false;
+      };
+
+      # Custom package: cicpy (Custom IC Creator Python frontend, PyPI-only)
+      cicpy = pkgs.python3.pkgs.buildPythonApplication rec {
+        pname = "cicpy";
+        version = "0.1.10";
+        format = "wheel";
+
+        src = pkgs.fetchurl {
+          url = "https://files.pythonhosted.org/packages/2d/d4/e4dfbe822624d2b55bfce3e421ca219a7968ca3dcf7f2874b4d972b9d8f3/${pname}-${version}-py3-none-any.whl";
+          sha256 = "092502de202c8eaa45fb32fbb63c2e341136d311f7c5963e883f8472e72267fc";
+        };
+
+        propagatedBuildInputs = with pkgs.python3.pkgs; [
+          numpy
+          pandas
+          svgwrite
+          click
+          pyyaml
+          matplotlib
+          cicspi
+        ];
+
+        doCheck = false;
+
+        meta = with pkgs.lib; {
+          description = "Custom IC Creator Python frontend (cicpy)";
+          homepage = "https://github.com/wulffern/cicpy";
+          license = licenses.mit;
+          platforms = platforms.linux;
+          mainProgram = "cicpy";
+        };
+      };
+
     in {
 
       # ---------------------------
@@ -99,10 +187,14 @@
 
             # Custom packages
             xschem-gaw
+            ciccreator
+            cicpy
           ];
         };
 
         default = self.packages.x86_64-linux.allTools;
+
+        inherit ciccreator cicpy;
       };
 
       # ---------------------------
