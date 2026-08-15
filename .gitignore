@@ -4,6 +4,12 @@
 /.direnv/
 /.envrc
 
+# Continue
+/.continue/
+
+# Claude Code
+/CLAUDE.md
+
 # Python (Common for EDA and scripts)
 __pycache__/
 *.py[cod]
