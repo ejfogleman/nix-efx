@@ -117,12 +117,12 @@
       # Custom package: cicpy (Custom IC Creator Python frontend, PyPI-only)
       cicpy = pkgs.python3.pkgs.buildPythonApplication rec {
         pname = "cicpy";
-        version = "0.1.10";
+        version = "0.2.0";
         format = "wheel";
 
         src = pkgs.fetchurl {
-          url = "https://files.pythonhosted.org/packages/2d/d4/e4dfbe822624d2b55bfce3e421ca219a7968ca3dcf7f2874b4d972b9d8f3/${pname}-${version}-py3-none-any.whl";
-          sha256 = "092502de202c8eaa45fb32fbb63c2e341136d311f7c5963e883f8472e72267fc";
+          url = "https://files.pythonhosted.org/packages/bb/8d/67df6fa98ef57d2589eeb846a76f639e95533fb61b69e03a038323a781f7/${pname}-${version}-py3-none-any.whl";
+          sha256 = "b4188967d5aececfb36ef0ec36593d55bc014288efdb6672d71c1fd9dcc63cda";
         };
 
         propagatedBuildInputs = with pkgs.python3.pkgs; [
